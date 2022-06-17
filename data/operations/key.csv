@@ -1,0 +1,12 @@
+﻿column_name,name_in_OPSNET,name_in_TAF,name
+date,Date,date,Date
+facility,Facility,LOC_ID,Facility
+itin_carrier,Carrier,ITN_AC,Itinerant Air Carrier
+itin_taxi,Taxi,ITN_AT,Itinerant Air Taxi
+itin_ga,Aviation,ATN_GA,Itinerant General Aviation
+itin_military,Military,_ITN_MIL,Itinerant Military
+itin_total,Total,T_ITN,Total Itinerant
+lcl_civil,Civil,LOC_GA,Local Civil
+lcl_military,Military,LOC_MIL,Local Military
+lcl_total,Total,T_LOC,Total Local
+total,Operations,T_AOPS,Total Operations
