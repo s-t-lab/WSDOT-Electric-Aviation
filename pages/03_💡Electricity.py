@@ -3,9 +3,9 @@ import pandas as pd
 import plotly.graph_objects as go
 import utils as u
 
-u.sidebar()
-
 from Start import data
+
+u.sidebar()
 
 datasheet, datasheet_key = data["electricity"]
 

@@ -4,9 +4,9 @@ import plotly.graph_objects as go
 
 import utils as u
 
-u.sidebar()
-
 from Start import data
+
+u.sidebar()
 
 # st.write("here4",data.keys())
 
