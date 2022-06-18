@@ -6,7 +6,7 @@ import utils as u
 
 from Start import data
 
-u.sidebar()
+u.sidebar() #this likely needs to be after the "from Start import data" line, because otherwise the st.set_page_config() command is run more than once, which leads to an error
 
 # st.write("here4",data.keys())
 

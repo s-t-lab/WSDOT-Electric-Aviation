@@ -9,15 +9,30 @@ u.sidebar()
 
 datasheet, datasheet_key = data["electricity"]
 
-st.write("this is the electricity.py file")
+st.title("Plausible electricity demand at PAE and MWH 📈💡")
+
+
+# st.write("this is the electricity.py file")
 
 # st.write(datasheet_key)
 
 # st.write(datasheet["Start"])
 
+output_vars = {"Annual energy [MWh]" : "Electricity demand (energy)", 
+				"Average power [kW]" : "Electricity demand (power, aver",
+				"Peak power [kW]" : "Electricity demand (power, peak"}
+# name_in_sheet = ["Electricity demand (energy)", "Electricity demand (power, average)", "Electricity demand (power, peak)"]
+ylabels = {	"Electricity demand (energy)" : "Electricity demand (energy) [MWh/year]", 
+			"Electricity demand (power, aver" : "Average electricity demand (power) [kW]", 
+			"Electricity demand (power, peak" : "Peak electricity demand (power) [kW]", 
+		}
 
-
-df = datasheet["Electricity demand (energy)"]#.T
+col01, col02, col03 = st.columns(3)
+with col01:
+	output_var = output_vars[st.selectbox("Output variable (annual energy/average power/peak power):", output_vars.keys(), index=2)]
+# st.write(datasheet.keys())
+# df = datasheet["Electricity demand (energy)"]#.T
+df = datasheet[output_var]#.T
 
 df_key = datasheet_key["dimensions"]
 df_key.index = df_key["column_name"]
@@ -64,24 +79,6 @@ df.columns = labels
 # st.write(df)
 # st.write(df_key.head())
 
-# st.write(df_key)
-# st.write(df_key.loc[("PAE", "Local Civil", "Low", "Fast", "Fast")])
-
-#save data as csv
-# df.to_csv("data/aggregations/data_OPSNET.csv")
-
-# categories = {"itin_carrier" : "Itinerant Air Carrier", "itin_taxi" : "Itinerant Air Taxi", "itin_ga" : "Itinerant General Aviation", "itin_military" : "Itinerant Military", "lcl_civil" : "Local Civil", "lcl_miltary" : "Local Military"}
-# categories = [col for col in df.columns if "total" not in col]
-
-# st.title("Operations at PAE and MWH Airports 🛩️🌎")
-st.title("Plausible electricity demand at PAE and MWH 📈💡")
-
-# st.write("Explore the number of operations (take-offs and landings) at each of the following three airports. Have fun! 💡")
-# st.write("+ Grant County International Airport (MWH), at Moses Lake\n + Paine Field/Snohomish County Airport (PAE)\n + Seattle-Tacoma International Airport (SEA)")
-
-# fac = st.selectbox("Airport:", df.index.levels[1].to_list())
-
-# st.write("Data can be taken from one of the following sources:\n + [FAA's Operations Network (OPSNET)](https://aspm.faa.gov/opsnet/sys/Airport.asp), reporting counts of airport operations as recorded by the Air Traffic Activity System (ATADS)\n   * Can be aggregated by day, month, or year\n + [FAA's Terminal Area Forecast (TAF)](https://taf.faa.gov/), representing official FAA forecasts of aviation activity (see also [here](https://www.faa.gov/data_research/aviation/taf))\n   * Only available by year")
 
 col11, col12 = st.columns(2)
 with col11:
@@ -96,6 +93,10 @@ with col22:
 	feasibility_scenario = st.selectbox("Feasibility rate scenario:", feasibility_scenarios, index=1)
 with col23:
 	adoption_scenario = st.selectbox("Adoption rate scenario:", adoption_scenarios, index=1)
+if "power" in output_var:
+	col31, col32, col33 = st.columns(3)
+	with col31:
+		hours = st.selectbox("All charging occurs in how many hours?", range(2,25,2), index=3)
 
 yaxis_ranges = {"PAE": [0,32000], "MWH": [0,85000]}
 
@@ -151,7 +152,7 @@ fig = go.Figure()
 layout = dict(
 	height=600, 
 	xaxis_title = "Year", 
-	yaxis_title = "Electricity demand (energy) [MWh/year]", 
+	yaxis_title = ylabels[output_var], 
 	yaxis_range = yaxis_ranges[airport], 
 	xaxis = dict(
 		# rangeselector = dict(
@@ -220,7 +221,13 @@ fig.update_layout(layout)
 for operation_category in operation_categories_selected:
 	label = u.get_label(airport, operation_categories_short[operation_category], ops_scenario, feasibility_scenario, adoption_scenario)
 	# st.write(label)
-	fig.add_trace(go.Bar(x=df.index, y=df[label], name=operation_category))
+	y = df[label]
+	if "power" in output_var:
+		y *= 8/hours
+	fig.add_trace(go.Bar(x=df.index, y=y, name=operation_category))
+
+# if "power" in output_var:
+	# fig.update_layout(dict(yaxis_range = (0,yaxis_ranges[airport][1]*(1+0.2*(8-hours)))))
 
 st.plotly_chart(fig, sharing="streamlit", use_container_width=True)
 	
