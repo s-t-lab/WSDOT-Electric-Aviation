@@ -211,13 +211,8 @@ for operation_category in operation_categories_selected:
 		y *= 8/hours
 	fig.add_trace(go.Bar(x=df.index, y=y, name=operation_category,
 							hovertemplate = hovertemplates[output_var]
-							# "%{y:.1f} MW", 
-							# "{0:s}: {1:.2f} MW".format(operation_category, y), 
-							# "<i>{0:s}</i>: {1:.2f} MW".format(operation_category, y), 
-							# '<br><b>X</b>: %{x}<br>'+
-							# '<b>%{text}</b>',
-							# text = ['Custom text {}'.format(i + 1) for i in range(40)],
 	))
+	st.write(y)
 
 if "power" in output_var:
 	total_label = u.get_label(airport, "Total", ops_scenario, feasibility_scenario, adoption_scenario)
