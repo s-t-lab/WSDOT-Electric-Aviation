@@ -4,11 +4,11 @@
 
 A Python-based application utilizing Streamlit to provide structured, interactive visualizations on potential future electric aircraft operations at Paine Field and Grant County International Airport in Washington, USA.
 
-The Python implementation is available at <https://github.com/...>. It is available under an [MIT License](LICENSE).
+The Python implementation is available at <https://github.com/s-t-lab/WSDOT-Electric-Aviation>. It is available under an [MIT License](LICENSE).
 
 ## Usage
 
-The application can be found under <https://share.streamlit.io/steffen-coe/...>.
+The application can be found under <https://share.streamlit.io/s-t-lab/wsdot-electric-aviation/main/Start.py>.
 
 The application was written in the Python programming language (version 3.8), using the [Streamlit interface](https://streamlit.io/) to produce an interactive user interface with tables and visuals.
 
