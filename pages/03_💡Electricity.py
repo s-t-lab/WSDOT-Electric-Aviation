@@ -212,7 +212,7 @@ for operation_category in operation_categories_selected:
 	fig.add_trace(go.Bar(x=df.index, y=y, name=operation_category,
 							hovertemplate = hovertemplates[output_var]
 	))
-	st.write(y)
+	# st.write(y)
 
 if "power" in output_var:
 	total_label = u.get_label(airport, "Total", ops_scenario, feasibility_scenario, adoption_scenario)
