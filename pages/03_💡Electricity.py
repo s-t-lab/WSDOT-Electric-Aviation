@@ -27,10 +27,10 @@ ylabels = {	"Electricity demand (energy)" : "Electricity demand (energy) [MWh/ye
 			"Electricity demand (power, peak" : "Peak electricity demand (power) [kW]", 
 		}
 
-col01, col02, col03 = st.columns(3)
+col01, col02 = st.columns(2)
 with col01:
 	output_var = output_vars[st.selectbox("Output variable (annual energy/average power/peak power):", output_vars.keys(), index=2)]
-# st.write(datasheet.keys())
+st.write(datasheet.keys())
 # df = datasheet["Electricity demand (energy)"]#.T
 df = datasheet[output_var]#.T
 
