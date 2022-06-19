@@ -9,7 +9,7 @@ u.sidebar()
 
 datasheet, datasheet_key = data["electricity"]
 
-st.title("Plausible electricity demand at PAE and MWH 📈💡")
+st.title("Plausible Electricity Demand for Electric Aviation at PAE and MWH 📈💡")
 
 
 # st.write("this is the electricity.py file")
@@ -19,18 +19,22 @@ st.title("Plausible electricity demand at PAE and MWH 📈💡")
 # st.write(datasheet["Start"])
 
 output_vars = {"Annual energy [MWh]" : "Electricity demand (energy)", 
-				"Average power [kW]" : "Electricity demand (power, aver",
-				"Peak power [kW]" : "Electricity demand (power, peak"}
-# name_in_sheet = ["Electricity demand (energy)", "Electricity demand (power, average)", "Electricity demand (power, peak)"]
-ylabels = {	"Electricity demand (energy)" : "Electricity demand (energy) [MWh/year]", 
-			"Electricity demand (power, aver" : "Average electricity demand (power) [kW]", 
-			"Electricity demand (power, peak" : "Peak electricity demand (power) [kW]", 
+				"Average power [kW]" : "Electricity demand (power, aver", 
+				"Peak power [MW]" : "Electricity demand (power, peak", 
+		}
+ylabels = {	"Electricity demand (energy)" : "Annual energy [MWh]", 
+			"Electricity demand (power, aver" : "Average power [kW]", 
+			"Electricity demand (power, peak" : "Peak power [MW]", 
+		}
+hovertemplates = {"Electricity demand (energy)" : "%{y:.1f} MWh", 
+				"Electricity demand (power, aver" : "%{y:.0f} kW", 
+				"Electricity demand (power, peak" : "%{y:.1f} MW", 
 		}
 
 col01, col02 = st.columns(2)
 with col01:
 	output_var = output_vars[st.selectbox("Output variable (annual energy/average power/peak power):", output_vars.keys(), index=2)]
-st.write(datasheet.keys())
+# st.write(datasheet.keys())
 # df = datasheet["Electricity demand (energy)"]#.T
 df = datasheet[output_var]#.T
 
@@ -93,12 +97,12 @@ with col22:
 	feasibility_scenario = st.selectbox("Feasibility rate scenario:", feasibility_scenarios, index=1)
 with col23:
 	adoption_scenario = st.selectbox("Adoption rate scenario:", adoption_scenarios, index=1)
-if "power" in output_var:
+if "peak" in output_var:
 	col31, col32, col33 = st.columns(3)
 	with col31:
 		hours = st.selectbox("All charging occurs in how many hours?", range(2,25,2), index=3)
 
-yaxis_ranges = {"PAE": [0,32000], "MWH": [0,85000]}
+# yaxis_ranges = {"PAE": [0,32000], "MWH": [0,75000]}
 
 # aggregation by day/month/year
 # agg_options = ["Day", "Month", "Year"]
@@ -153,29 +157,8 @@ layout = dict(
 	height=600, 
 	xaxis_title = "Year", 
 	yaxis_title = ylabels[output_var], 
-	yaxis_range = yaxis_ranges[airport], 
+	# yaxis_range = yaxis_ranges[airport], 
 	xaxis = dict(
-		# rangeselector = dict(
-			# buttons=list([
-				# dict(count=1,
-					 # label="1m",
-					 # step="month",
-					 # stepmode="backward"),
-				# dict(count=6,
-					 # label="6m",
-					 # step="month",
-					 # stepmode="backward"),
-				# dict(count=1, 
-					 # label="1y", 
-					 # step="year", 
-					 # stepmode="backward"),
-				# dict(count=1, 
-					 # label="YTD", 
-					 # step="year", 
-					 # stepmode="todate"),
-				# dict(step="all")
-			# ])
-		# ),
 		rangeslider = dict(
 			visible = True, 
 		),
@@ -222,15 +205,48 @@ for operation_category in operation_categories_selected:
 	label = u.get_label(airport, operation_categories_short[operation_category], ops_scenario, feasibility_scenario, adoption_scenario)
 	# st.write(label)
 	y = df[label]
-	if "power" in output_var:
+	if "peak" in output_var:
+		y /= 1000 #kW to MW
+	if "peak" in output_var:
 		y *= 8/hours
-	fig.add_trace(go.Bar(x=df.index, y=y, name=operation_category))
+	fig.add_trace(go.Bar(x=df.index, y=y, name=operation_category,
+							hovertemplate = hovertemplates[output_var]
+							# "%{y:.1f} MW", 
+							# "{0:s}: {1:.2f} MW".format(operation_category, y), 
+							# "<i>{0:s}</i>: {1:.2f} MW".format(operation_category, y), 
+							# '<br><b>X</b>: %{x}<br>'+
+							# '<b>%{text}</b>',
+							# text = ['Custom text {}'.format(i + 1) for i in range(40)],
+	))
 
-# if "power" in output_var:
-	# fig.update_layout(dict(yaxis_range = (0,yaxis_ranges[airport][1]*(1+0.2*(8-hours)))))
+if "power" in output_var:
+	total_label = u.get_label(airport, "Total", ops_scenario, feasibility_scenario, adoption_scenario)
+	show_peak = True if "peak" in output_var else False
+	if not show_peak:
+		hours = None #because it wasn't defined before (and is not needed in this case)
+	fig.update_layout(dict(yaxis_range = u.get_yaxis_range(airport, show_peak, df.loc[2039, total_label], hours)))
+
+if "aver" in output_var:
+	fig.add_hline(y=2500, line_color="orange")
+	fig.add_hline(y=10000, line_color="purple")
+if "peak" in output_var:
+	fig.add_hline(y=2.5, line_color="orange")
+	fig.add_hline(y=10, line_color="purple")
+# fig.update_layout(dict(yaxis_range = None)) # in case no custom yaxis ranges are desired
+
+if "power" in output_var:
+	y = df[total_label]
+	if "peak" in output_var:
+		y *= 8/hours
+	try:
+		year2_5 = str(y[y > 2500].index.tolist()[0])
+	except:
+		year2_5 = "/"
+	try:
+		year10 = str(y[y > 10000].index.tolist()[0])
+	except:
+		year10 = "/"
+	st.markdown('- First year with total power above 2.5 MW: <font color="orange">**%s**</font>\n- First year with total power above 10 MW: <font color="purple">**%s**</font>'%(year2_5,year10), unsafe_allow_html=True)
 
 st.plotly_chart(fig, sharing="streamlit", use_container_width=True)
-	
-
-
 

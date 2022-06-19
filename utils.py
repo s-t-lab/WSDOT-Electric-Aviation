@@ -14,4 +14,25 @@ def sidebar():
 	st.sidebar.title("WSDOT Electric Aviation 🛩️💡📈")
 	# st.sidebar.subheader("Navigation")
 	# st.sidebar.info("**Author:** Steffen Coenen")
-	st.sidebar.info("**Full material:** The results dataset and all code is available at the corresponding [GitHub repository](https://github.com/steffen-coe/...).")
+	st.sidebar.info("**Full material:** The results dataset and all code is available at the corresponding [GitHub repository](https://github.com/s-t-lab/WSDOT-Electric-Aviation).")
+
+def get_yaxis_range(airport, show_peak, total_2039, hours):
+	upper = 1e6
+	if airport == "PAE":
+		if show_peak:
+			if hours >= 6:
+				upper = 43
+			else:
+				upper = 130
+		else:
+			upper = 3700
+	elif airport == "MWH":
+		if show_peak:
+			if hours >= 6:
+				upper = 115
+			else:
+				upper = 340
+		else:
+			upper = 9200
+	
+	return (0, upper)
