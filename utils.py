@@ -21,17 +21,21 @@ def get_yaxis_range(airport, show_peak, total_2039, hours):
 	if airport == "PAE":
 		if show_peak:
 			if hours >= 6:
-				upper = 43
+				# upper = 43
+				upper = 62
 			else:
-				upper = 130
+				# upper = 130
+				upper = 190
 		else:
 			upper = 3700
 	elif airport == "MWH":
 		if show_peak:
 			if hours >= 6:
-				upper = 115
+				# upper = 115
+				upper = 125
 			else:
-				upper = 340
+				# upper = 340
+				upper = 375
 		else:
 			upper = 9200
 	

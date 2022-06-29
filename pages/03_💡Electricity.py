@@ -30,6 +30,12 @@ hovertemplates = {"Electricity demand (energy)" : "%{y:.1f} MWh",
 				"Electricity demand (power, aver" : "%{y:.0f} kW", 
 				"Electricity demand (power, peak" : "%{y:.1f} MW", 
 		}
+colors = {
+			"Local Civil" : "#1f77b4", 
+			"Itinerant General Aviation" : "#d62728", 
+			"Itinerant Air Taxi" : "#2ca02c", 
+			"eVTOL" : "#9467bd", 
+		}
 
 col01, col02 = st.columns(2)
 with col01:
@@ -88,7 +94,8 @@ col11, col12 = st.columns(2)
 with col11:
 	airport = st.selectbox("Airport:", airports)
 with col12:
-	operation_categories_selected = st.multiselect("Operation category:", operation_categories, default=[operation_category for operation_category in operation_categories if "Total" not in operation_category if "eVTOL" not in operation_category])
+	# operation_categories_selected = st.multiselect("Operation category:", operation_categories, default=[operation_category for operation_category in operation_categories if "Total" not in operation_category if "eVTOL" not in operation_category])
+	operation_categories_selected = st.multiselect("Operation category:", operation_categories, default=[operation_category for operation_category in operation_categories if "Total" not in operation_category])
 st.write("**Scenarios:**")
 col21, col22, col23 = st.columns(3)
 with col21:
@@ -209,7 +216,8 @@ for operation_category in operation_categories_selected:
 		y /= 1000 #kW to MW
 	if "peak" in output_var:
 		y *= 8/hours
-	fig.add_trace(go.Bar(x=df.index, y=y, name=operation_category,
+	# st.write(operation_category)
+	fig.add_trace(go.Bar(x=df.index, y=y, name=operation_category, marker_color=colors[operation_category], 
 							hovertemplate = hovertemplates[output_var]
 	))
 	# st.write(y)
