@@ -35,6 +35,7 @@ colors = {
 			"Itinerant General Aviation" : "#d62728", 
 			"Itinerant Air Taxi" : "#2ca02c", 
 			"eVTOL" : "#9467bd", 
+			"Total" : "#7f7f7f", 
 		}
 
 col01, col02 = st.columns(2)
