@@ -14,6 +14,15 @@ df, df_key = data["operations"]
 
 # st.write("this is the operations.py file")
 
+colors = {
+			"lcl_civil" : "#1f77b4", 
+			"itin_ga" : "#d62728", 
+			"itin_taxi" : "#2ca02c", 
+			"itin_carrier" : "#ff7f0e", 
+			"itin_military" : "#8c564b", 
+			"lcl_military" : "#e377c2", 
+			"Total" : "#7f7f7f", 
+		}
 
 # st.write(df_key)
 
@@ -140,9 +149,11 @@ if chart == "By category":
 	# for cat in categories.keys():
 	for cat in categories:
 		# fig.add_trace(go.Bar(x=dff.index, y=dff[cat], name=categories[cat]))
-		fig.add_trace(go.Bar(x=dff.index, y=dff[cat], name=df_key.loc[cat, "name"]))
+		# st.write(cat)
+		fig.add_trace(go.Bar(x=dff.index, y=dff[cat], name=df_key.loc[cat, "name"], marker_color=colors[cat]))
 elif chart == "Total":
-	fig.add_trace(go.Bar(x=dff.index, y=dff["total"], name="Total no. of operations"))
+	fig.add_trace(go.Bar(x=dff.index, y=dff["total"], name="Total no. of operations", marker_color=colors["Total"]))
+fig.update_layout(font=dict(size=18))
 
 st.plotly_chart(fig, sharing="streamlit", use_container_width=True)
 	

@@ -71,6 +71,7 @@ for airport in airports:
 df = df.drop([name_in_xlsx for name_in_xlsx in list(df_key["name_in_xlsx"]) if "short" not in name_in_xlsx], axis=1)
 df = df.T
 df.index = df.index.astype(int)
+df = df.loc[(df.index >= 2020) & (df.index <= 2040)]
 
 df.columns = labels
 
@@ -152,7 +153,7 @@ if "peak" in output_var:
 	# range = [max(pd.to_datetime("2018-12-05"), df_fac.index.min()-pd.Timedelta(26, "d")), df_fac.index.max()]
 # elif aggregation == "Year":
 	# range = [max(pd.to_datetime("2018-06-01"), df_fac.index.min()-pd.Timedelta(214, "d")), pd.to_datetime("%s-08-01"%df_fac.index.max().year)]
-range = [2020,2040]
+range = [2019,2041]
 
 # show totals or grouped by category
 # options = ["By category", "Total"]
@@ -237,6 +238,7 @@ if "peak" in output_var:
 	fig.add_hline(y=2.5, line_color="orange")
 	fig.add_hline(y=10, line_color="purple")
 # fig.update_layout(dict(yaxis_range = None)) # in case no custom yaxis ranges are desired
+fig.update_layout(font=dict(size=18))
 
 if "power" in output_var:
 	y = df[total_label]
