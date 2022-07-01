@@ -254,5 +254,6 @@ if "power" in output_var:
 		year10 = "/"
 	st.markdown('- First year with total power above 2.5 MW: <font color="orange">**%s**</font>\n- First year with total power above 10 MW: <font color="purple">**%s**</font>'%(year2_5,year10), unsafe_allow_html=True)
 
+
 st.plotly_chart(fig, sharing="streamlit", use_container_width=True)
 
