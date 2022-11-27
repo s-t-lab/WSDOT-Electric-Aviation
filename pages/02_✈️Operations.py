@@ -33,7 +33,7 @@ colors = {
 # categories = {"itin_carrier" : "Itinerant Air Carrier", "itin_taxi" : "Itinerant Air Taxi", "itin_ga" : "Itinerant General Aviation", "itin_military" : "Itinerant Military", "lcl_civil" : "Local Civil", "lcl_miltary" : "Local Military"}
 categories = [col for col in df.columns if "total" not in col]
 
-st.title("Operations at PAE and MWH Airports 🛩️")
+st.header("Operations at PAE and MWH Airports 🛩️")
 
 st.write("Explore the number of operations (take-offs and landings) at each of the following three airports.")
 st.write("+ Grant County International Airport (MWH), at Moses Lake\n + Paine Field/Snohomish County Airport (PAE)\n + Seattle-Tacoma International Airport (SEA)")
@@ -81,7 +81,7 @@ if aggregation == "Day":
 elif aggregation == "Month":
 	range = [max(pd.to_datetime("2018-12-05"), df_fac.index.min()-pd.Timedelta(26, "d")), df_fac.index.max()]
 elif aggregation == "Year":
-	range = [max(pd.to_datetime("2018-06-01"), df_fac.index.min()-pd.Timedelta(214, "d")), pd.to_datetime("%s-08-01"%df_fac.index.max().year)]
+	range = [max(pd.to_datetime("2014-06-01"), df_fac.index.min()-pd.Timedelta(214, "d")), pd.to_datetime("%s-08-01"%df_fac.index.max().year)]
 
 # show totals or grouped by category
 options = ["By category", "Total"]
@@ -153,7 +153,7 @@ if chart == "By category":
 		fig.add_trace(go.Bar(x=dff.index, y=dff[cat], name=df_key.loc[cat, "name"], marker_color=colors[cat]))
 elif chart == "Total":
 	fig.add_trace(go.Bar(x=dff.index, y=dff["total"], name="Total no. of operations", marker_color=colors["Total"]))
-fig.update_layout(font=dict(size=18))
+fig.update_layout(font=dict(size=22))
 
 st.plotly_chart(fig, sharing="streamlit", use_container_width=True)
 	

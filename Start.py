@@ -40,10 +40,6 @@ def get_data():
 	
 	#electricity data
 	datasheet = pd.read_excel("data/electricity/Electricity demand projections.xlsx", header=4, sheet_name=None)
-	# sheet_id = "1GA1Vegz-Ka97qageyRwOMGYLKVH4-sC5AqqyQOJpucg"
-	# sheet_name = "sample_1"
-	# url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/edit"#gviz/tq?tqx=out:csv&sheet={sheet_name}"
-	# datasheet = pd.read_excel("G:/.shortcut-targets-by-id/1SQ5iJBm9QO8OEi7IoRYve8E8OuCCSJH7/WSDOT Electric Aviation/Analysis/Electricity demand projections.xlsx", header=4, sheet_name=None)
 	datasheet_key = pd.read_excel("data/electricity/key.xlsx", sheet_name=None)
 	data["electricity"] = [datasheet, datasheet_key]
 	# data += [datasheet, datasheet_key]
@@ -85,7 +81,7 @@ def main():
 		# page.write(data, data_key)
 
 	
-	st.title("Electric Aviation at Paine Field and Grant County International Airport 🛩️💡📈")
+	st.header("Electric Aviation at Paine Field and Grant County International Airport 🛩️💡📈")
 	# st.write(type(data))
 	# st.write("here3",data.keys())
 	
@@ -93,6 +89,20 @@ def main():
 	
 	# st.write(data1)
 	# st.write(data2)
+	
+	st.write("**Link to paper (as accepted by the Transportation Research Board for presentation at the 2023 TRB Annual Meeting):**  \n [Coenen, S., Malarkey, D., MacKenzie, D. (2023). Estimating Electrical Energy and Capacity Demand for Regional Electric Flight Operations at Two Mid-Size Airports in Washington](https://sites.uw.edu/stlab/files/2022/11/Coenen-Malarkey-MacKenzie-TRBAM-23-02419-Electric-Aviation.pdf)")
+	
+	st.write("**Full material:**  \n The results dataset and all code is available \n at the corresponding [GitHub repository](https://github.com/s-t-lab/WSDOT-Electric-Aviation).")
+	
+	st.write("**Airports under consideration:**")
+	
+	col1, col2 = st.columns(2)
+	with col1:
+		st.write("Grant County International Airport (MWH) \n https://www.portofmoseslake.com/aeronautics/")
+		st.image("img/MWH.png")
+	with col2:
+		st.write("Paine Field/Snohomish County Airport (PAE) \n https://www.painefield.com/")
+		st.image("img/PAE.png")
 
 if __name__ == "__main__":
 	main()

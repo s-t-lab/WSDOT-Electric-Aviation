@@ -9,7 +9,7 @@ u.sidebar()
 
 datasheet, datasheet_key = data["electricity"]
 
-st.title("Plausible Electricity Demand for Electric Aviation at PAE and MWH 📈💡")
+st.header("Plausible Electricity Demand for Electric Aviation at PAE and MWH 📈💡")
 
 
 # st.write("this is the electricity.py file")
@@ -239,6 +239,7 @@ if "peak" in output_var:
 	fig.add_hline(y=10, line_color="purple")
 # fig.update_layout(dict(yaxis_range = None)) # in case no custom yaxis ranges are desired
 fig.update_layout(font=dict(size=18))
+fig.update_layout(font=dict(size=22))
 
 if "power" in output_var:
 	y = df[total_label]
