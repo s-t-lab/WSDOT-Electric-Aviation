@@ -6,13 +6,11 @@ import utils as u
 
 from Start import data
 
+save_figure = 0 #set to True if using this tool locally to output the figures
+
 u.sidebar() #this likely needs to be after the "from Start import data" line, because otherwise the st.set_page_config() command is run more than once, which leads to an error
 
-# st.write("here4",data.keys())
-
 df, df_key = data["operations"]
-
-# st.write("this is the operations.py file")
 
 colors = {
 			"lcl_civil" : "#1f77b4", 
@@ -89,12 +87,26 @@ chart = st.radio("Show total number of operations or by operation category:", op
 
 fig = go.Figure()
 
+fsize = 18
+if save_figure:
+	fsize = 22
+ffactor = 0.75
+
 # layout options of the graph
 layout = dict(
 	height=600, 
-	xaxis_title = "Date", 
-	yaxis_title = "Number of operations", 
-	# yaxis_range = [0, 110000], 
+	xaxis_title = "<b>Date</b>", 
+	yaxis_title = "<b>Number of operations</b>", 
+	xaxis_title_font_color = "black", 
+	yaxis_title_font_color = "black", 
+	xaxis_title_font_size = fsize, 
+	yaxis_title_font_size = fsize, 
+	xaxis_tickfont_color = "black", 
+	yaxis_tickfont_color = "black", 
+	yaxis_gridcolor = "grey", 
+	xaxis_tickfont_size = fsize, 
+	yaxis_tickfont_size = fsize*ffactor, 
+	hoverlabel_namelength=-1, #do not truncate the hoverlabels
 	xaxis = dict(
 		rangeselector = dict(
 			buttons=list([
@@ -153,24 +165,19 @@ if chart == "By category":
 		fig.add_trace(go.Bar(x=dff.index, y=dff[cat], name=df_key.loc[cat, "name"], marker_color=colors[cat]))
 elif chart == "Total":
 	fig.add_trace(go.Bar(x=dff.index, y=dff["total"], name="Total no. of operations", marker_color=colors["Total"]))
-fig.update_layout(font=dict(size=22))
+fig.update_layout(yaxis=dict(tickformat = ","))
+
+if save_figure:
+	range_for_export = [pd.to_datetime("2014-06-01"), pd.to_datetime("2021-08-01")]
+	fig.update_layout(xaxis_range=range_for_export) #range
+
+	fig.update_layout(yaxis_title_standoff=15, yaxis_automargin=True)
+	fig.update_layout(yaxis_dtick = 20000)
+	
+	width = 1000
+	width = fsize*1000/22
+	fig.write_image("img/plots/ops/ops_%s.png"%fac, width=width, height=0.65*width, scale=5)
 
 st.plotly_chart(fig, sharing="streamlit", use_container_width=True)
-	
 
-
-
-
-# st.write("Hlleooooooo")
-
-
-# st.write(data1)
-# st.write(data2)
-
-# import time
-
-# with st.spinner(f"Loading Opss ..."):
-	# for i in range(2):
-		# time.sleep(1)
-		# st.write("slept",i)
 

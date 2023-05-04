@@ -5,6 +5,8 @@ import utils as u
 
 from Start import data
 
+save_figure = 0 #set to True if using this tool locally to output the figures
+
 u.sidebar()
 
 datasheet, datasheet_key = data["electricity"]
@@ -161,11 +163,27 @@ range = [2019,2041]
 
 fig = go.Figure()
 
+fsize = 18
+if save_figure:
+	fsize = 22
+ffactor = 0.75
+
 # layout options of the graph
 layout = dict(
 	height=600, 
-	xaxis_title = "Year", 
-	yaxis_title = ylabels[output_var], 
+	xaxis_title = "<b>Year</b>", 
+	yaxis_title = "<b>%s</b>"%ylabels[output_var], 
+	xaxis_title_font_color = "black", 
+	yaxis_title_font_color = "black", 
+	xaxis_title_font_size = fsize, 
+	yaxis_title_font_size = fsize, 
+	xaxis_tickfont_color = "black", 
+	yaxis_tickfont_color = "black", 
+	yaxis_gridcolor = "grey", 
+	xaxis_tickfont_size = fsize, 
+	yaxis_tickfont_size = fsize*ffactor, 
+	hoverlabel_namelength=-1, #do not truncate the hoverlabels
+	
 	# yaxis_range = yaxis_ranges[airport], 
 	xaxis = dict(
 		rangeslider = dict(
@@ -238,8 +256,7 @@ if "peak" in output_var:
 	fig.add_hline(y=2.5, line_color="orange")
 	fig.add_hline(y=10, line_color="purple")
 # fig.update_layout(dict(yaxis_range = None)) # in case no custom yaxis ranges are desired
-fig.update_layout(font=dict(size=18))
-fig.update_layout(font=dict(size=22))
+# fig.update_layout(font=dict(size=18))
 
 if "power" in output_var:
 	y = df[total_label]
@@ -255,6 +272,13 @@ if "power" in output_var:
 		year10 = "/"
 	st.markdown('- First year with total power above 2.5 MW: <font color="orange">**%s**</font>\n- First year with total power above 10 MW: <font color="purple">**%s**</font>'%(year2_5,year10), unsafe_allow_html=True)
 
+fig.update_layout(yaxis=dict(tickformat = ","))
+
+if save_figure:
+	fig.update_layout(yaxis_title_standoff=15, yaxis_automargin=True)
+	
+	width = 1000
+	width = fsize*1000/22
+	fig.write_image("img/plots/ele/ele_{0:s}_{1:s}_{2:3s}_{3:3s}_{4:3s}.png".format(airport,output_var,ops_scenario, feasibility_scenario, adoption_scenario), width=width, height=0.65*width, scale=5)
 
 st.plotly_chart(fig, sharing="streamlit", use_container_width=True)
-

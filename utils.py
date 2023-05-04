@@ -54,10 +54,12 @@ def get_yaxis_range(airport, show_peak, total_2039, hours):
 		if show_peak:
 			if hours >= 6:
 				# upper = 43
-				upper = 60
+				# upper = 60
+				upper = 50.5
 			else:
 				# upper = 130
-				upper = 180
+				# upper = 180
+				upper = 175.5
 		else:
 			# upper = 3700
 			upper = 5000
@@ -65,10 +67,12 @@ def get_yaxis_range(airport, show_peak, total_2039, hours):
 		if show_peak:
 			if hours >= 6:
 				# upper = 115
-				upper = 60
+				# upper = 60
+				upper = 50.5
 			else:
 				# upper = 340
-				upper = 240
+				# upper = 240
+				upper = 175.5
 		else:
 			# upper = 9200
 			upper = 11000

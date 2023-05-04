@@ -14,7 +14,8 @@ st.set_page_config(
 # import app
 
 # """
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
+@st.cache_data()
 def get_data():
 	data = {}
 	# data = []
