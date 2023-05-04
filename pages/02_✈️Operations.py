@@ -174,7 +174,7 @@ if save_figure:
 	fig.update_layout(yaxis_title_standoff=15, yaxis_automargin=True)
 	fig.update_layout(yaxis_dtick = 20000)
 	
-	width = 1000
+	# width = 1000
 	width = fsize*1000/22
 	fig.write_image("img/plots/ops/ops_%s.png"%fac, width=width, height=0.65*width, scale=5)
 

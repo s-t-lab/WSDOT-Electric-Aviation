@@ -166,7 +166,8 @@ fig = go.Figure()
 fsize = 18
 if save_figure:
 	fsize = 22
-ffactor = 0.75
+# ffactor = 0.75
+ffactor = 0.85
 
 # layout options of the graph
 layout = dict(
@@ -180,7 +181,8 @@ layout = dict(
 	xaxis_tickfont_color = "black", 
 	yaxis_tickfont_color = "black", 
 	yaxis_gridcolor = "grey", 
-	xaxis_tickfont_size = fsize, 
+	# xaxis_tickfont_size = fsize, 
+	xaxis_tickfont_size = fsize*ffactor, 
 	yaxis_tickfont_size = fsize*ffactor, 
 	hoverlabel_namelength=-1, #do not truncate the hoverlabels
 	
@@ -275,10 +277,12 @@ if "power" in output_var:
 fig.update_layout(yaxis=dict(tickformat = ","))
 
 if save_figure:
-	fig.update_layout(yaxis_title_standoff=15, yaxis_automargin=True)
+	# fig.update_layout(yaxis_title_standoff=15, yaxis_automargin=True)
+	fig.update_layout(yaxis_title_standoff=10, yaxis_automargin=True)
 	
-	width = 1000
-	width = fsize*1000/22
-	fig.write_image("img/plots/ele/ele_{0:s}_{1:s}_{2:3s}_{3:3s}_{4:3s}.png".format(airport,output_var,ops_scenario, feasibility_scenario, adoption_scenario), width=width, height=0.65*width, scale=5)
+	# width = 1000
+	# width = fsize*1000/22
+	width = fsize*750/22
+	fig.write_image("img/plots/ele/ele_{0:s}_{1:s}_{2:3s}_{3:3s}_{4:3s}.png".format(airport,output_var,ops_scenario, feasibility_scenario, adoption_scenario), width=width, height=0.8*width, scale=5)
 
 st.plotly_chart(fig, sharing="streamlit", use_container_width=True)
